@@ -6,6 +6,11 @@ public class CanAddOperationSpecification(IEnumerable<IAddOperationSpecification
 
     public SpecificationResult IsSatisfiedBy(IEnumerable<Operation> operations, OperationType newOperationType)
     {
+        if (!operations.Any())
+        {
+            return new SpecificationResult(true);
+        }
+
         foreach (var specyfication in specyfications)
         {
             var specyficationResult = specyfication.IsSatisfiedBy(operations, newOperationType);

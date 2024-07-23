@@ -16,8 +16,10 @@ public class InvoiceRepository : IInvoiceRepository
         return _invoices.FirstOrDefault(inv => inv.ClientId == clientId && inv.CreationDate.Month == month && inv.CreationDate.Year == year);
     }
 
-    public IEnumerable<Invoice> GetAllInvoices()
+    public IEnumerable<Invoice> GetInvoices(Guid clientId, int month, int year)
     {
-        return _invoices;
+        return _invoices.Where(invoice => invoice.ClientId == clientId 
+            && invoice.CreationDate.Month == month 
+            && invoice.CreationDate.Year == year);
     }
 }

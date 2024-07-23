@@ -1,12 +1,15 @@
 ﻿namespace Domain.Operations.Specyfications;
 
-public sealed class CanResumeServiceSpecification : IAddOperationSpecification
+public sealed class CanResumeServiceSpecification : AddOperationSpecificationBase, IAddOperationSpecification
 {
-    public SpecificationResult IsSatisfiedBy(IEnumerable<Operation> operations, OperationType newOperationType)
+    public override SpecificationResult IsSatisfiedBy(IEnumerable<Operation> operations, OperationType newOperationType)
     {
-        var orderedOperations = operations.OrderBy(o => o.OperationDate);
-        var isSatisfied = newOperationType == OperationType.ResumeService && orderedOperations.Last().OperationType != OperationType.PauseService;
-        var message = isSatisfied ? "Cannot resume service unless last operation is pause." : string.Empty;
+        var lastOperationType = GetLastOperationType(operations);
+
+        var isSatisfied = newOperationType == OperationType.ResumeService 
+            && lastOperationType != OperationType.PauseService;
+
+        var message = GetMessage(isSatisfied, "Cannot resume service unless last operation is pause.");
 
         return new SpecificationResult(!isSatisfied, message);
     }

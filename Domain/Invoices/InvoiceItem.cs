@@ -16,7 +16,7 @@ public record InvoiceItem
             ? endDate 
             : throw new ArgumentException($"{nameof(EndDate)} must have a value.", nameof(endDate));
 
-        if (startDate >= endDate)
+        if (startDate > endDate)
         {
             throw new ArgumentException($"{nameof(startDate)} must be earlier than {nameof(endDate)}.");
         }

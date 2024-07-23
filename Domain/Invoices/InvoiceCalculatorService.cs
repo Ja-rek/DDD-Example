@@ -54,11 +54,21 @@ public class InvoiceCalculatorService(IInvoiceRepository invoiceRepository)
 
     private int CalculateServiceDays(DateTime start, DateTime end)
     {
-        return (end - start).Days;
+        if (start > end)
+        {
+            throw new ArgumentException($"Argument {nameof(start)} must be earlier than {nameof(end)}.");
+        }
+
+        return (end - start).Days + 1;
     }
 
     private decimal CalculateServiceValue(Operation operation, int days)
     {
+        if (days == 0)
+        {
+            throw new ArgumentException($"Argument {nameof(days)} must be greater than 0.");
+        }
+
         return operation.PricePerDay.GetValueOrDefault() * operation.Quantity * days;
     }
 

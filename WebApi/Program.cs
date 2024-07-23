@@ -26,10 +26,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapPost("/onvoice/calculate", (InvoiceCommandService invoiceCommandService, CalculateInvoicesCommand cmd) => 
+app.MapPost("/invoice/calculate", (InvoiceCommandService invoiceCommandService, CalculateInvoicesCommand cmd) => 
     invoiceCommandService.CalculateInvoices(cmd));
 
-app.MapGet("/onvoice", (InvoiceQueryService invoiceQueryService) => invoiceQueryService.GetInvoices());
+app.MapGet("/invoice", (InvoiceQueryService invoiceQueryService, GetInvoicesQuery query) => invoiceQueryService.GetInvoices(query));
 
 app.MapPost("/operation", (OperationCommandService operationCommandService, [FromBody]AddOperationCommand cmd) =>
 {

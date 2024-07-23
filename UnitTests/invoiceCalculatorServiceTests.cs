@@ -81,14 +81,14 @@ public class invoiceCalculatorServiceTests
         firstItem.ServiceId.Should().Be(serviceId);
         firstItem.StartDate.Should().Be(new DateTime(2023, 1, 1));
         firstItem.EndDate.Should().Be(new DateTime(2023, 1, 2));
-        firstItem.Value.Should().Be(10); // 1 day * 10 price * 1 quantity
+        firstItem.Value.Should().Be(20); // 2 day * 10 price * 1 quantity
         firstItem.IsPaused.Should().BeTrue();
 
         var secondItem = invoice.Items[1];
         secondItem.ServiceId.Should().Be(serviceId);
         secondItem.StartDate.Should().Be(new DateTime(2023, 1, 3));
         secondItem.EndDate.Should().Be(new DateTime(2023, 1, 20));
-        secondItem.Value.Should().Be(170); // 17 days * 10 price * 1 quantity
+        secondItem.Value.Should().Be(180); // 18 days * 10 price * 1 quantity
         secondItem.IsPaused.Should().BeFalse();
     }
 }

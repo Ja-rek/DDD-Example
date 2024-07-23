@@ -35,16 +35,14 @@ public static class AutofacExtensions
         const string key = "a";
 
         builder.RegisterAssemblyTypes(assembly)
-               .Where(t => t.Name.EndsWith("Specification") 
-                    && !t.IsAbstract 
+               .Where(t => t.Name.EndsWith("Specification")
+                    && !t.IsAbstract
                     && t.Name != nameof(CanAddOperationSpecification))
                .Keyed<IAddOperationSpecification>(key)
-               .AsImplementedInterfaces()
-               .InstancePerRequest();
+               .AsImplementedInterfaces();
 
         builder.Register(ctx => new CanAddOperationSpecification(ctx.ResolveKeyed<IEnumerable<IAddOperationSpecification>>(key)))
-               .AsImplementedInterfaces()
-               .InstancePerRequest();
+               .AsImplementedInterfaces();
     }
 
     private static void RegisterServices(ContainerBuilder builder, Assembly assembly, string suffix)
@@ -52,8 +50,7 @@ public static class AutofacExtensions
         builder.RegisterAssemblyTypes(assembly)
                .Where(t => t.Name.EndsWith(suffix) && !t.IsAbstract)
                .AsImplementedInterfaces()
-               .AsSelf()
-               .InstancePerRequest();
+               .AsSelf();
     }
 }
 

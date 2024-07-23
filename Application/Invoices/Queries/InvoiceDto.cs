@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Application.Invoices.Queries;
 
-public record InvoiceDto(Invoice Invoice)
+public class InvoiceDto(Invoice Invoice)
 {
     public Guid Id { get; } = Invoice.Id;
     public Guid ClientId { get; } = Invoice.ClientId;
