@@ -4,6 +4,8 @@ using Domain.Operations;
 
 namespace UnitTests;
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
 public class InvoiceTests
 {
     [Test]
@@ -142,4 +144,5 @@ public class InvoiceTests
         addedItem.IsPaused.Should().BeTrue();
     }
 }
-
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
