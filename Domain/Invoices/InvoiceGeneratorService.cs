@@ -29,7 +29,7 @@ public class InvoiceGeneratorService(IInvoiceRepository invoiceRepository)
             {
                 if (currentStart != DateTime.MinValue)
                 {
-                    invoice.AddInvoiceItemWithContinuousRenditionPeriod(operation, currentStart);
+                    invoice.AddItemWithContinuousRenditionPeriod(operation, currentStart);
                     currentStart = DateTime.MinValue;
                 }
             }

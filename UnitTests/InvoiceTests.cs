@@ -74,7 +74,7 @@ public class InvoiceTests
     }
 
     [Test]
-    public void AddInvoiceItemWithContinuousRenditionPeriod_ShouldAddItemToInvoice()
+    public void AddItemWithContinuousRenditionPeriod_ShouldAddItemToInvoice()
     {
         // Arrange
         var clientId = Guid.NewGuid();
@@ -83,7 +83,7 @@ public class InvoiceTests
         var operation = new Operation(serviceId, clientId, 10, 50m, DateTime.UtcNow.AddDays(5), OperationType.StartService);
 
         // Act
-        invoice.AddInvoiceItemWithContinuousRenditionPeriod(operation, DateTime.UtcNow);
+        invoice.AddItemWithContinuousRenditionPeriod(operation, DateTime.UtcNow);
 
         // Assert
         invoice.Items.Should().HaveCount(1);
@@ -96,14 +96,14 @@ public class InvoiceTests
     }
 
     [Test]
-    public void AddInvoiceItemWithContinuousRenditionPeriod_ShouldThrowException_WhenOperationIsNull()
+    public void AddItemWithContinuousRenditionPeriod_ShouldThrowException_WhenOperationIsNull()
     {
         // Arrange
         var clientId = Guid.NewGuid();
         var invoice = new Invoice(clientId);
 
         // Act
-        Action act = () => invoice.AddInvoiceItemWithContinuousRenditionPeriod(null, DateTime.UtcNow);
+        Action act = () => invoice.AddItemWithContinuousRenditionPeriod(null, DateTime.UtcNow);
 
         // Assert
         act.Should().Throw<ArgumentNullException>().WithMessage("Value cannot be null. (Parameter 'operation')");
@@ -119,14 +119,14 @@ public class InvoiceTests
         var operation = new Operation(serviceId, clientId, 10, 50m, DateTime.UtcNow.AddDays(5), OperationType.StartService);
 
         // Act
-        Action act = () => invoice.AddInvoiceItemWithContinuousRenditionPeriod(operation, DateTime.UtcNow.AddDays(10));
+        Action act = () => invoice.AddItemWithContinuousRenditionPeriod(operation, DateTime.UtcNow.AddDays(10));
 
         // Assert
         act.Should().Throw<ArgumentException>().WithMessage("Argument start must be earlier than end.");
     }
 
     [Test]
-    public void AddInvoiceItemWithContinuousRenditionPeriod_ShouldHandlePausedServiceCorrectly()
+    public void AddItemWithContinuousRenditionPeriod_ShouldHandlePausedServiceCorrectly()
     {
         // Arrange
         var clientId = Guid.NewGuid();
@@ -135,7 +135,7 @@ public class InvoiceTests
         var operation = new Operation(serviceId, clientId, 10, 50m, DateTime.UtcNow.AddDays(5), OperationType.PauseService);
 
         // Act
-        invoice.AddInvoiceItemWithContinuousRenditionPeriod(operation, DateTime.UtcNow);
+        invoice.AddItemWithContinuousRenditionPeriod(operation, DateTime.UtcNow);
 
         // Assert
         var addedItem = invoice.Items[0];

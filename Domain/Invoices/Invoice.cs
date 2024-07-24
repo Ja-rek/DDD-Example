@@ -11,7 +11,7 @@ public class Invoice(Guid clientId)
     public DateTime CreationDate { get; } = DateTime.UtcNow;
     public List<InvoiceItem> Items { get; } = new List<InvoiceItem>();
 
-    public void AddInvoiceItemWithContinuousRenditionPeriod(Operation operation, DateTime operationStart)
+    public void AddItemWithContinuousRenditionPeriod(Operation operation, DateTime operationStart)
     {
         if (operation == null) throw new ArgumentNullException(nameof(operation));
 
