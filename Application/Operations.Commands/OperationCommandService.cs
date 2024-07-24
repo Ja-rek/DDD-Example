@@ -1,8 +1,8 @@
 ﻿using Domain.Operations;
 
-namespace Application.Operations;
+namespace Application.Operations.Commands;
 
-public class OperationCommandService(IOperationRepository operationRepository, 
+public class OperationCommandService(IOperationRepository operationRepository,
     OperationFactory operationFactory)
 {
     private readonly IOperationRepository operationRepository = operationRepository;

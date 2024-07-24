@@ -1,4 +1,4 @@
-﻿namespace Domain.Operations.Specyfications;
+﻿namespace Domain.Operations.Specifications;
 
 public readonly ref struct SpecificationResult(bool isSatisfied, string errorMessage = "")
 {

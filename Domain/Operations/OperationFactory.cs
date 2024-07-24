@@ -1,10 +1,10 @@
-﻿using Domain.Operations.Specyfications;
+﻿using Domain.Operations.Specifications;
 
 namespace Domain.Operations;
 
-public class OperationFactory(IAddOperationSpecification canAddOperationSpecyfication)
+public class OperationFactory(IAddOperationSpecification canAddOperationSpecification)
 {
-    private readonly IAddOperationSpecification canAddOperationSpecyfication = canAddOperationSpecyfication;
+    private readonly IAddOperationSpecification canAddOperationSpecification = canAddOperationSpecification;
     
     public Operation Operation(Guid serviceId, 
         Guid clientId, 
@@ -14,7 +14,7 @@ public class OperationFactory(IAddOperationSpecification canAddOperationSpecyfic
         OperationType operationType,
         IEnumerable<Operation> operations)
     {
-        var specResult = canAddOperationSpecyfication.IsSatisfiedBy(operations, operationType);
+        var specResult = canAddOperationSpecification.IsSatisfiedBy(operations, operationType);
         
         if(!specResult.IsSatisfied)
         {

@@ -1,5 +1,4 @@
-﻿using Application.Invoices.Commands;
-using Domain.Invoices;
+﻿using Domain.Invoices;
 
 namespace Application.Invoices.Queries;
 

@@ -1,5 +1,5 @@
 ﻿using Domain.Operations;
-using Domain.Operations.Specyfications;
+using Domain.Operations.Specifications;
 using FluentAssertions;
 
 namespace UnitTests;

@@ -1,4 +1,4 @@
-﻿namespace Domain.Operations.Specyfications;
+﻿namespace Domain.Operations.Specifications;
 
 public abstract class  AddOperationSpecificationBase
 {

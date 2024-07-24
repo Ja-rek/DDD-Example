@@ -1,4 +1,4 @@
-﻿namespace Domain.Operations.Specyfications;
+﻿namespace Domain.Operations.Specifications;
 
 public sealed class CanEndServiceSpecification : AddOperationSpecificationBase, IAddOperationSpecification
 {

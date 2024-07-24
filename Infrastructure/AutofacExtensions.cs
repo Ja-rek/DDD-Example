@@ -1,7 +1,7 @@
 ﻿using Application.Invoices.Queries;
 using Autofac;
 using Domain.Invoices;
-using Domain.Operations.Specyfications;
+using Domain.Operations.Specifications;
 using System.Reflection;
 
 namespace Infrastructure;

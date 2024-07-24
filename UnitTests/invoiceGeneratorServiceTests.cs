@@ -18,7 +18,7 @@ public class invoiceGeneratorServiceTests
     }
 
     [Test]
-    public void Calculate_ShouldThrowException_WhenLastOperationIsNotEndService()
+    public void TryGenerateInvoice_ShouldThrowException_WhenLastOperationIsNotEndService()
     {
         // Arrange
         var operations = new List<Operation>
@@ -34,7 +34,7 @@ public class invoiceGeneratorServiceTests
     }
 
     [Test]
-    public void Calculate_ShouldThrowException_WhenInvoiceAlreadyExists()
+    public void TryGenerateInvoice_ShouldThrowException_WhenInvoiceAlreadyExists()
     {
         // Arrange
         var clientId = Guid.NewGuid();
@@ -54,7 +54,7 @@ public class invoiceGeneratorServiceTests
     }
 
     [Test]
-    public void Calculate_ShouldCreateInvoice_WhenValidOperationsProvided()
+    public void TryGenerateInvoice_ShouldCreateInvoice_WhenValidOperationsProvided()
     {
         // Arrange
         var clientId = Guid.NewGuid();

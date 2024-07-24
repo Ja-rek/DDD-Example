@@ -1,8 +1,8 @@
-﻿namespace Domain.Operations.Specyfications;
+﻿namespace Domain.Operations.Specifications;
 
-public class CanAddOperationSpecification(IEnumerable<IAddOperationSpecification> specyfications) : IAddOperationSpecification
+public class CanAddOperationSpecification(IEnumerable<IAddOperationSpecification> specifications) : IAddOperationSpecification
 {
-    private readonly IEnumerable<IAddOperationSpecification> specyfications = specyfications;
+    private readonly IEnumerable<IAddOperationSpecification> specifications = specifications;
 
     public SpecificationResult IsSatisfiedBy(IEnumerable<Operation> operations, OperationType newOperationType)
     {
@@ -11,12 +11,12 @@ public class CanAddOperationSpecification(IEnumerable<IAddOperationSpecification
             return new SpecificationResult(true);
         }
 
-        foreach (var specyfication in specyfications)
+        foreach (var specification in specifications)
         {
-            var specyficationResult = specyfication.IsSatisfiedBy(operations, newOperationType);
-            if (!specyficationResult.IsSatisfied)
+            var specificationResult = specification.IsSatisfiedBy(operations, newOperationType);
+            if (!specificationResult.IsSatisfied)
             {
-                return specyficationResult;
+                return specificationResult;
             }
         }
 
