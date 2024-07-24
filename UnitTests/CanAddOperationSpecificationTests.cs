@@ -10,7 +10,7 @@ public class CanAddOperationSpecificationTests
     private IAddOperationSpecification pauseSpec;
     private IAddOperationSpecification resumeSpec;
     private IAddOperationSpecification endSpec;
-    private CanAddOperationSpecification _specification;
+    private CanAddOperationSpecification specification;
 
     [SetUp]
     public void SetUp()
@@ -28,7 +28,7 @@ public class CanAddOperationSpecificationTests
             endSpec
         };
 
-        _specification = new CanAddOperationSpecification(specifications);
+        specification = new CanAddOperationSpecification(specifications);
     }
 
     [Test]
@@ -39,7 +39,7 @@ public class CanAddOperationSpecificationTests
         var newOperationType = OperationType.StartService;
 
         // Act
-        var result = _specification.IsSatisfiedBy(operations, newOperationType);
+        var result = specification.IsSatisfiedBy(operations, newOperationType);
 
         // Assert
         result.IsSatisfied.Should().BeTrue();
@@ -59,7 +59,7 @@ public class CanAddOperationSpecificationTests
         var newOperationType = OperationType.StartService;
 
         // Act
-        var result = _specification.IsSatisfiedBy(operations, newOperationType);
+        var result = specification.IsSatisfiedBy(operations, newOperationType);
 
         // Assert
         result.IsSatisfied.Should().BeFalse();
@@ -78,7 +78,7 @@ public class CanAddOperationSpecificationTests
         var newOperationType = OperationType.PauseService;
 
         // Act
-        var result = _specification.IsSatisfiedBy(operations, newOperationType);
+        var result = specification.IsSatisfiedBy(operations, newOperationType);
 
         // Assert
         result.IsSatisfied.Should().BeFalse();
@@ -97,7 +97,7 @@ public class CanAddOperationSpecificationTests
         var newOperationType = OperationType.ResumeService;
 
         // Act
-        var result = _specification.IsSatisfiedBy(operations, newOperationType);
+        var result = specification.IsSatisfiedBy(operations, newOperationType);
 
         // Assert
         result.IsSatisfied.Should().BeFalse();
@@ -116,7 +116,7 @@ public class CanAddOperationSpecificationTests
         var newOperationType = OperationType.EndService;
 
         // Act
-        var result = _specification.IsSatisfiedBy(operations, newOperationType);
+        var result = specification.IsSatisfiedBy(operations, newOperationType);
 
         // Assert
         result.IsSatisfied.Should().BeFalse();
@@ -136,7 +136,7 @@ public class CanAddOperationSpecificationTests
         var newOperationType = OperationType.EndService;
 
         // Act
-        var result = _specification.IsSatisfiedBy(operations, newOperationType);
+        var result = specification.IsSatisfiedBy(operations, newOperationType);
 
         // Assert
         result.IsSatisfied.Should().BeTrue();
@@ -155,7 +155,7 @@ public class CanAddOperationSpecificationTests
         var newOperationType = OperationType.PauseService;
 
         // Act
-        var result = _specification.IsSatisfiedBy(operations, newOperationType);
+        var result = specification.IsSatisfiedBy(operations, newOperationType);
 
         // Assert
         result.IsSatisfied.Should().BeTrue();
@@ -175,7 +175,7 @@ public class CanAddOperationSpecificationTests
         var newOperationType = OperationType.ResumeService;
 
         // Act
-        var result = _specification.IsSatisfiedBy(operations, newOperationType);
+        var result = specification.IsSatisfiedBy(operations, newOperationType);
 
         // Assert
         result.IsSatisfied.Should().BeTrue();
