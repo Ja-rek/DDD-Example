@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using Domain.Invoices;
+﻿using Domain.Invoices;
 using Domain.Operations;
 
 namespace UnitTests;
