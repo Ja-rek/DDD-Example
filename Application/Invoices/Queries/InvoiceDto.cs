@@ -1,12 +1,11 @@
 ﻿using Domain.Invoices;
-using System.Globalization;
 
 namespace Application.Invoices.Queries;
 
-public class InvoiceDto(Invoice Invoice)
+public class InvoiceDto()
 {
-    public Guid Id { get; } = Invoice.Id;
-    public Guid ClientId { get; } = Invoice.ClientId;
-    public string CreationDate { get; } = Invoice.CreationDate.ToString(new CultureInfo("pl-PL"));
-    public IEnumerable<InvoiceItem> Items { get; } = Invoice.Items;
+    public required Guid Id { get; set; }
+    public required Guid ClientId { get; set; }
+    public required string CreationDate { get; set; }
+    public required IEnumerable<InvoiceItem> Items { get; set; }
 }
