@@ -1,10 +1,11 @@
 using Application.Invoices.Commands;
 using Application.Invoices.Queries;
-using Application.Operations;
+using Application.Operations.Commands;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,12 +30,13 @@ if (app.Environment.IsDevelopment())
 app.MapPost("/invoice/calculate", (InvoiceCommandService invoiceCommandService, CalculateInvoicesCommand cmd) => 
     invoiceCommandService.CalculateInvoices(cmd));
 
-app.MapGet("/invoice", (InvoiceQueryService invoiceQueryService, GetInvoicesQuery query) => invoiceQueryService.GetInvoices(query));
+app.MapGet("/invoice", (InvoiceQueryService invoiceQueryService, [FromBody]GetInvoicesQuery query) => invoiceQueryService.GetInvoices(query));
 
-app.MapPost("/operation", (OperationCommandService operationCommandService, [FromBody]AddOperationCommand cmd) =>
+app.MapPost("/operation", (OperationCommandService operationCommandService, AddOperationCommand cmd) =>
 {
     operationCommandService.AddOperation(cmd);
 });
 
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.Run();
