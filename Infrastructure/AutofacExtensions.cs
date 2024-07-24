@@ -14,7 +14,7 @@ public static class AutofacExtensions
         Assembly[] assemblies =
         [
             typeof(InvoiceQueryService).Assembly,
-            typeof(InvoiceCalculatorService).Assembly,
+            typeof(InvoiceGeneratorService).Assembly,
             typeof(InvoiceRepository).Assembly
         ];
 
@@ -31,7 +31,7 @@ public static class AutofacExtensions
 
     private static void RegisterSpecification(ContainerBuilder builder)
     {
-        var assembly = typeof(InvoiceCalculatorService).Assembly;
+        var assembly = typeof(InvoiceGeneratorService).Assembly;
         const string key = "a";
 
         builder.RegisterAssemblyTypes(assembly)

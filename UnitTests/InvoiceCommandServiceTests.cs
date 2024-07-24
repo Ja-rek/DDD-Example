@@ -17,9 +17,9 @@ public class InvoiceCommandServiceTests
     {
         operationRepositoryMock = new Mock<IOperationRepository>();
         invoiceRepositoryMock = new Mock<IInvoiceRepository>();
-        var invoiceCalculatorService = new InvoiceCalculatorService(invoiceRepositoryMock.Object);
+        var invoiceGenerator = new InvoiceGeneratorService(invoiceRepositoryMock.Object);
         service = new InvoiceCommandService(operationRepositoryMock.Object,
-            invoiceCalculatorService,
+            invoiceGenerator,
             invoiceRepositoryMock.Object);
     }
 

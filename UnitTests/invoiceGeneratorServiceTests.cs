@@ -5,16 +5,16 @@ using Moq;
 
 namespace UnitTests;
 
-public class invoiceCalculatorServiceTests
+public class invoiceGeneratorServiceTests
 {
     private Mock<IInvoiceRepository> invoiceRepositoryMock;
-    private InvoiceCalculatorService invoiceCalculatorService;
+    private InvoiceGeneratorService invoiceGenerator;
 
     [SetUp]
     public void Setup()
     {
         invoiceRepositoryMock = new Mock<IInvoiceRepository>();
-        invoiceCalculatorService = new InvoiceCalculatorService(invoiceRepositoryMock.Object);
+        invoiceGenerator = new InvoiceGeneratorService(invoiceRepositoryMock.Object);
     }
 
     [Test]
@@ -27,7 +27,7 @@ public class invoiceCalculatorServiceTests
         };
 
         // Act
-        Action act = () => invoiceCalculatorService.Calculate(Guid.NewGuid(), operations, 1, 2023);
+        Action act = () => invoiceGenerator.TryGenerateInvoice(Guid.NewGuid(), operations, 1, 2023);
 
         // Assert
         act.Should().Throw<InvalidOperationException>().WithMessage("Cannot generate invoice for client unless the last operation is ending the service.");
@@ -47,7 +47,7 @@ public class invoiceCalculatorServiceTests
         invoiceRepositoryMock.Setup(x => x.GetInvoice(clientId, 1, 2023)).Returns(new Invoice(clientId));
 
         // Act
-        Action act = () => invoiceCalculatorService.Calculate(clientId, operations, 1, 2023);
+        Action act = () => invoiceGenerator.TryGenerateInvoice(clientId, operations, 1, 2023);
 
         // Assert
         act.Should().Throw<InvalidOperationException>().WithMessage("Invoice for this client and period already exists.");
@@ -70,7 +70,7 @@ public class invoiceCalculatorServiceTests
         invoiceRepositoryMock.Setup(x => x.GetInvoice(clientId, 1, 2023)).Returns((Invoice)null);
 
         // Act
-        var invoice = invoiceCalculatorService.Calculate(clientId, operations, 1, 2023);
+        var invoice = invoiceGenerator.TryGenerateInvoice(clientId, operations, 1, 2023);
 
         // Assert
         invoice.Should().NotBeNull();

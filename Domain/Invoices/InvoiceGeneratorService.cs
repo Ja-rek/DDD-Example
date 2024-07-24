@@ -2,12 +2,17 @@
 
 namespace Domain.Invoices;
 
-public class InvoiceCalculatorService(IInvoiceRepository invoiceRepository)
+public class InvoiceGeneratorService(IInvoiceRepository invoiceRepository)
 {
     private readonly IInvoiceRepository invoiceRepository = invoiceRepository;
 
-    public Invoice Calculate(Guid clientId, IEnumerable<Operation> operations, int month, int year)
+    public Invoice? TryGenerateInvoice(Guid clientId, IEnumerable<Operation> operations, int month, int year)
     {
+        if(!operations.Any())
+        {
+            return null;
+        }
+
         ValidateLastOperationIsEndService(operations);
         EnsureNoExistingInvoice(clientId, month, year);
 
@@ -24,7 +29,7 @@ public class InvoiceCalculatorService(IInvoiceRepository invoiceRepository)
             {
                 if (currentStart != DateTime.MinValue)
                 {
-                    AddInvoiceItem(invoice, operation, currentStart);
+                    invoice.AddInvoiceItemWithContinuousRenditionPeriod(operation, currentStart);
                     currentStart = DateTime.MinValue;
                 }
             }
@@ -41,35 +46,6 @@ public class InvoiceCalculatorService(IInvoiceRepository invoiceRepository)
     private bool IsServicePauseOrEnd(Operation operation)
     {
         return operation.OperationType == OperationType.PauseService || operation.OperationType == OperationType.EndService;
-    }
-
-    private void AddInvoiceItem(Invoice invoice, Operation operation, DateTime currentStart)
-    {
-        var days = CalculateServiceDays(currentStart, operation.OperationDate);
-        var value = CalculateServiceValue(operation, days);
-        var isPaused = operation.OperationType == OperationType.PauseService;
-        var item = new InvoiceItem(operation.ServiceId, currentStart, operation.OperationDate, value, isPaused);
-        invoice.AddItem(item);
-    }
-
-    private int CalculateServiceDays(DateTime start, DateTime end)
-    {
-        if (start > end)
-        {
-            throw new ArgumentException($"Argument {nameof(start)} must be earlier than {nameof(end)}.");
-        }
-
-        return (end - start).Days + 1;
-    }
-
-    private decimal CalculateServiceValue(Operation operation, int days)
-    {
-        if (days == 0)
-        {
-            throw new ArgumentException($"Argument {nameof(days)} must be greater than 0.");
-        }
-
-        return operation.PricePerDay.GetValueOrDefault() * operation.Quantity * days;
     }
 
     private void ValidateLastOperationIsEndService(IEnumerable<Operation> operations)

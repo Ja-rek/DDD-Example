@@ -4,11 +4,11 @@ using Domain.Operations;
 namespace Application.Invoices.Commands;
 
 public class InvoiceCommandService(IOperationRepository operationRepository,
-    InvoiceCalculatorService invoiceCalculator,
+    InvoiceGeneratorService invoiceGenerator,
     IInvoiceRepository invoiceRepository)
 {
     private readonly IOperationRepository operationRepository = operationRepository;
-    private readonly InvoiceCalculatorService invoiceCalculator = invoiceCalculator;
+    private readonly InvoiceGeneratorService invoiceGenerator = invoiceGenerator;
     private readonly IInvoiceRepository invoiceRepository = invoiceRepository;
 
     public void CalculateInvoices(CalculateInvoicesCommand cmd)
@@ -22,15 +22,15 @@ public class InvoiceCommandService(IOperationRepository operationRepository,
                 Month,
                 Year);
 
-            if (!operations.Any())
-                continue;
-
-            var invoice = invoiceCalculator.Calculate(clientId,
+            var invoice = invoiceGenerator.TryGenerateInvoice(clientId,
                 operations,
                 Month,
                 Year);
 
-            invoiceRepository.Save(invoice);
+            if (invoice != null)
+            {
+                invoiceRepository.Save(invoice);
+            }
         }
     }
 }

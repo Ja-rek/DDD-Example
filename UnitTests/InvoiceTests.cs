@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Domain.Invoices;
+using Domain.Operations;
 
 namespace UnitTests;
 
@@ -73,37 +74,72 @@ public class InvoiceTests
     }
 
     [Test]
-    public void AddItem_ShouldThrowArgumentNullException_WhenItemIsNull()
-    {
-        // Arrange
-        var clientId = Guid.NewGuid();
-        var invoice = new Invoice(clientId);
-
-        // Act
-        Action act = () => invoice.AddItem(null);
-
-        // Assert
-        act.Should().Throw<ArgumentNullException>().WithMessage("Value cannot be null. (Parameter 'item')");
-    }
-
-    [Test]
-    public void AddItem_ShouldAddInvoiceItemToItemsList()
+    public void AddInvoiceItemWithContinuousRenditionPeriod_ShouldAddItemToInvoice()
     {
         // Arrange
         var clientId = Guid.NewGuid();
         var invoice = new Invoice(clientId);
         var serviceId = Guid.NewGuid();
-        var startDate = new DateTime(2023, 7, 18);
-        var endDate = new DateTime(2023, 7, 19);
-        var value = 100m;
-        var isPaused = false;
-        var item = new InvoiceItem(serviceId, startDate, endDate, value, isPaused);
+        var operation = new Operation(serviceId, clientId, 10, 50m, DateTime.UtcNow.AddDays(5), OperationType.StartService);
 
         // Act
-        invoice.AddItem(item);
+        invoice.AddInvoiceItemWithContinuousRenditionPeriod(operation, DateTime.UtcNow);
 
         // Assert
-        invoice.Items.Should().ContainSingle(i => i == item);
+        invoice.Items.Should().HaveCount(1);
+        var addedItem = invoice.Items[0];
+        addedItem.ServiceId.Should().Be(serviceId);
+        addedItem.StartDate.Should().BeCloseTo(DateTime.UtcNow, TimeSpan.FromSeconds(1));
+        addedItem.EndDate.Should().BeCloseTo(DateTime.UtcNow.AddDays(5), TimeSpan.FromSeconds(1));
+        addedItem.Value.Should().Be(50m * 10 * 5); // 5 days * 50m * 10 quantity
+        addedItem.IsPaused.Should().BeFalse();
+    }
+
+    [Test]
+    public void AddInvoiceItemWithContinuousRenditionPeriod_ShouldThrowException_WhenOperationIsNull()
+    {
+        // Arrange
+        var clientId = Guid.NewGuid();
+        var invoice = new Invoice(clientId);
+
+        // Act
+        Action act = () => invoice.AddInvoiceItemWithContinuousRenditionPeriod(null, DateTime.UtcNow);
+
+        // Assert
+        act.Should().Throw<ArgumentNullException>().WithMessage("Value cannot be null. (Parameter 'operation')");
+    }
+
+    [Test]
+    public void AddInvoiceItemWithContinuousRenditionPeriod_ShouldThrowException_WhenStartIsLaterThanEnd()
+    {
+        // Arrange
+        var clientId = Guid.NewGuid();
+        var invoice = new Invoice(clientId);
+        var serviceId = Guid.NewGuid();
+        var operation = new Operation(serviceId, clientId, 10, 50m, DateTime.UtcNow.AddDays(5), OperationType.StartService);
+
+        // Act
+        Action act = () => invoice.AddInvoiceItemWithContinuousRenditionPeriod(operation, DateTime.UtcNow.AddDays(10));
+
+        // Assert
+        act.Should().Throw<ArgumentException>().WithMessage("Argument start must be earlier than end.");
+    }
+
+    [Test]
+    public void AddInvoiceItemWithContinuousRenditionPeriod_ShouldHandlePausedServiceCorrectly()
+    {
+        // Arrange
+        var clientId = Guid.NewGuid();
+        var invoice = new Invoice(clientId);
+        var serviceId = Guid.NewGuid();
+        var operation = new Operation(serviceId, clientId, 10, 50m, DateTime.UtcNow.AddDays(5), OperationType.PauseService);
+
+        // Act
+        invoice.AddInvoiceItemWithContinuousRenditionPeriod(operation, DateTime.UtcNow);
+
+        // Assert
+        var addedItem = invoice.Items[0];
+        addedItem.IsPaused.Should().BeTrue();
     }
 }
 
